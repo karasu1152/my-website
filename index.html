@@ -158,7 +158,7 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 ════════════════════════════ */
 #page-hotel{background:#0D0C0A;color:#F7F3EE;padding-top:56px;}
 .hotel-hero{min-height:100vh;background:url('https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=1600&q=80') center/cover no-repeat;position:relative;display:flex;flex-direction:column;justify-content:flex-end;padding:0 clamp(2rem,6vw,5rem) clamp(3rem,6vh,5rem);}
-.hotel-hero::before{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(13,12,10,0.85) 0%,rgba(13,12,10,0.3) 50%,rgba(13,12,10,0.5) 100%);}
+.hotel-hero::before{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(13,12,10,0.62) 0%,rgba(13,12,10,0.1) 45%,rgba(13,12,10,0.38) 100%);}
 .hotel-divider{width:1px;height:32px;background:rgba(201,168,76,0.5);margin:0 auto;}
 .hotel-label{font-size:.6rem;letter-spacing:.3em;color:rgba(201,168,76,0.7);text-transform:uppercase;}
 .hotel-input{width:100%;background:rgba(247,243,238,0.05);border:1px solid rgba(247,243,238,0.12);color:#F7F3EE;font-family:'Noto Sans JP',sans-serif;font-size:.8rem;padding:.85rem 1rem;transition:border-color .25s;}
@@ -175,6 +175,12 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 .book-btn-solid:hover{background:#d4b560;}
 .amenity-item{display:flex;align-items:center;gap:.75rem;padding:1rem 0;border-bottom:1px solid rgba(247,243,238,0.06);}
 .amenity-icon{width:40px;height:40px;border:1px solid rgba(201,168,76,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+
+/* ── Image fallback ── */
+.work-card-thumb,.product-card-img,.room-img{background:linear-gradient(135deg,#13131A 0%,#1E1E2A 100%);}
+img{background:#13131A;}
+#page-cafe img{background:#E8DDD0;}
+#page-ec img{background:#E8E3DB;}
 
 /* ── Scrollbar ── */
 ::-webkit-scrollbar{width:4px;}
@@ -300,16 +306,14 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
         </div>
         <div class="reveal" style="transition-delay:.15s">
           <p class="section-label mb-6">About Me</p>
-          <p style="color:rgba(255,255,255,0.55);font-size:.85rem;line-height:2;font-family:'Noto Sans JP',sans-serif;">
-            クラウドワークスを中心に活動するWebクリエイターです。<br><br>
-            「デザインの美しさ」と「使いやすさ」を両立させ、<br>
-            クライアントのビジネス目標に直結するWebサイトを<br>
-            制作することを
-            モットーにしています。<br><br>
-            美容室・飲食店・EC・ホテルなど多様なジャンルに対応。<br>
-            Figmaでのデザインカンプ作成から<br>
-            コーディング・WordPressへの組み込みまで<br>
-            一貫してお任せください。
+          <p style="color:rgba(255,255,255,0.65);font-size:.85rem;line-height:2;font-family:'Noto Sans JP',sans-serif;margin-bottom:1rem;">
+            クラウドワークスを中心に活動するWebクリエイターです。
+          </p>
+          <p style="color:rgba(255,255,255,0.65);font-size:.85rem;line-height:2;font-family:'Noto Sans JP',sans-serif;margin-bottom:1rem;">
+            「デザインの美しさ」と「使いやすさ」を両立させ、クライアントのビジネス目標に直結するWebサイトを制作することをモットーにしています。
+          </p>
+          <p style="color:rgba(255,255,255,0.65);font-size:.85rem;line-height:2;font-family:'Noto Sans JP',sans-serif;">
+            美容室・飲食店・EC・ホテルなど多様なジャンルに対応。Figmaでのデザインカンプ作成からコーディング・WordPressへの組み込みまで一貫してお任せください。
           </p>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:2rem;">
             <div style="background:#13131A;border:1px solid rgba(255,255,255,0.06);padding:1.25rem;">
@@ -612,7 +616,7 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
     <div class="ec-hero-left">
       <span class="ec-tag" style="margin-bottom:2rem;">2025 AUTUMN / WINTER</span>
       <h1 style="font-family:'Cormorant Garamond',serif;font-size:clamp(3rem,7vw,6rem);font-weight:300;color:#F2EDE4;line-height:.95;letter-spacing:-.01em;">Less is<br><em style="font-style:italic;">More.</em></h1>
-      <p style="color:rgba(242,237,228,0.55);font-size:.82rem;line-height:2;margin-top:1.5rem;max-width:380px;font-family:'Noto Sans JP',sans-serif;">自然と人を繋ぐ素材、未来に残る一着を。<br>SŌZAI は、有機農法で育てた日本の素材と職人の技で、<br>サステナブルなファッションを提案します。</p>
+      <p style="color:rgba(242,237,228,0.75);font-size:.82rem;line-height:2;margin-top:1.5rem;max-width:380px;font-family:'Noto Sans JP',sans-serif;">自然と人を繋ぐ素材、未来に残る一着を。SŌZAI は、有機農法で育てた日本の素材と職人の技で、サステナブルなファッションを提案します。</p>
       <div style="display:flex;gap:1rem;margin-top:2.5rem;flex-wrap:wrap;">
         <button onclick="document.getElementById('ec-products').scrollIntoView({behavior:'smooth'})" style="background:#F2EDE4;color:#1C1C1C;border:none;font-family:'Noto Sans JP',sans-serif;font-size:.72rem;letter-spacing:.2em;padding:.9rem 2.5rem;cursor:pointer;transition:opacity .2s;" onmouseover="this.style.opacity='.8'" onmouseout="this.style.opacity='1'">コレクションを見る</button>
         <button style="background:none;border:1px solid rgba(242,237,228,0.35);color:rgba(242,237,228,0.7);font-family:'Noto Sans JP',sans-serif;font-size:.72rem;letter-spacing:.2em;padding:.9rem 2.5rem;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='rgba(242,237,228,0.7)';this.style.color='#F2EDE4'" onmouseout="this.style.borderColor='rgba(242,237,228,0.35)';this.style.color='rgba(242,237,228,0.7)'">コンセプトを読む</button>
@@ -632,9 +636,9 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
       <div>
         <span class="ec-tag-outline" style="margin-bottom:1.5rem;display:inline-block;">CONCEPT</span>
         <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,4vw,3.2rem);font-weight:300;color:#1C1C1C;line-height:1.2;margin-bottom:1.5rem;">地球に優しく、<br>自分にも正直に。</h2>
-        <p style="color:rgba(28,28,28,0.55);font-size:.82rem;line-height:2.1;font-family:'Noto Sans JP',sans-serif;">「素材（SŌZAI）」という名の通り、<br>私たちは原料にこだわります。</p>
-        <p style="color:rgba(28,28,28,0.55);font-size:.82rem;line-height:2.1;margin-top:1rem;font-family:'Noto Sans JP',sans-serif;">岡山・倉敷の有機綿農家、京都の西陣織職人、青森の藍染め工房。日本各地の素材と技術を未来へ繋ぐため、<br>全製品でトレーサビリティを公開しています。</p>
-        <p style="color:rgba(28,28,28,0.55);font-size:.82rem;line-height:2.1;margin-top:1rem;font-family:'Noto Sans JP',sans-serif;">捨てるのではなく、直す。流行ではなく、本質を選ぶ。<br>SOZAIはそのための選択肢を提供します。</p>
+        <p style="color:rgba(28,28,28,0.65);font-size:.82rem;line-height:2.1;font-family:'Noto Sans JP',sans-serif;">「素材（SŌZAI）」という名の通り、私たちは原料にこだわります。</p>
+        <p style="color:rgba(28,28,28,0.65);font-size:.82rem;line-height:2.1;margin-top:1rem;font-family:'Noto Sans JP',sans-serif;">岡山・倉敷の有機綿農家、京都の西陣織職人、青森の藍染め工房。日本各地の素材と技術を未来へ繋ぐため、全製品でトレーサビリティを公開しています。</p>
+        <p style="color:rgba(28,28,28,0.65);font-size:.82rem;line-height:2.1;margin-top:1rem;font-family:'Noto Sans JP',sans-serif;">捨てるのではなく、直す。流行ではなく、本質を選ぶ。SŌZAIはそのための選択肢を提供します。</p>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;">
         <img src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=400&q=80" style="width:100%;aspect-ratio:3/4;object-fit:cover;" alt="">
@@ -806,10 +810,10 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 
   <!-- Hero -->
   <section class="hotel-hero">
-    <div class="hotel-hero" style="position:relative;z-index:10;min-height:0;padding:0;">
+    <div style="position:relative;z-index:10;">
       <p style="font-family:'Cormorant Garamond',serif;font-style:italic;color:#C9A84C;font-size:1rem;letter-spacing:.3em;margin-bottom:1rem;">Niseko, Hokkaido</p>
-      <h1 style="font-family:'Cormorant Garamond',serif;font-size:clamp(3.5rem,10vw,8rem);font-weight:300;color:#F7F3EE;line-height:.92;letter-spacing:-.01em;">SHIZEN<br><em style="font-style:italic;color:rgba(247,243,238,0.6);">Resort</em></h1>
-      <p style="color:rgba(247,243,238,0.55);font-size:.82rem;letter-spacing:.18em;margin-top:1.5rem;font-family:'Noto Sans JP',sans-serif;max-width:400px;line-height:2;">自然と一体になる、静謐なリゾート体験。<br>北海道・ニセコの大自然に抱かれた<br>全室露天風呂付き離れ。</p>
+      <h1 style="font-family:'Cormorant Garamond',serif;font-size:clamp(3.5rem,10vw,8rem);font-weight:300;color:#F7F3EE;line-height:.92;letter-spacing:-.01em;">SHIZEN<br><em style="font-style:italic;color:#C9A84C;">Resort</em></h1>
+      <p style="color:rgba(247,243,238,0.88);font-size:.82rem;letter-spacing:.1em;margin-top:1.5rem;font-family:'Noto Sans JP',sans-serif;max-width:420px;line-height:2.1;">自然と一体になる、静謐なリゾート体験。北海道・ニセコの大自然に抱かれた全室露天風呂付き離れ。</p>
       <div style="display:flex;gap:1rem;margin-top:2rem;flex-wrap:wrap;">
         <button onclick="document.getElementById('hotel-book').scrollIntoView({behavior:'smooth'})" class="book-btn-solid">ご予約・空室確認</button>
         <button onclick="document.getElementById('hotel-rooms').scrollIntoView({behavior:'smooth'})" class="book-btn">お部屋を見る</button>
@@ -834,8 +838,8 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
       <div>
         <span class="hotel-label" style="display:block;margin-bottom:1.25rem;">PHILOSOPHY</span>
         <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,4vw,3rem);font-weight:300;color:#F7F3EE;line-height:1.2;margin-bottom:1.5rem;">自然の中に、<br><em style="font-style:italic;color:#C9A84C;">真の贅沢</em>がある。</h2>
-        <p style="color:rgba(247,243,238,0.45);font-size:.82rem;line-height:2.1;font-family:'Noto Sans JP',sans-serif;">SHIZEN RESOTは、「静けさ」と「自然」こそが最上の贅沢だ<br>という信念のもとに生まれました。<br>羊蹄山を望む絶景、手付かずの白樺林、澄んだ空気。</p>
-        <p style="color:rgba(247,243,238,0.45);font-size:.82rem;line-height:2.1;margin-top:1rem;font-family:'Noto Sans JP',sans-serif;">全8棟の離れには、それぞれ専用の露天温泉風呂を完備。<br>自家農園から届く食材を使った料理長のコース料理で、<br>五感すべてが満たされるひとときを。</p>
+        <p style="color:rgba(247,243,238,0.7);font-size:.82rem;line-height:2.1;font-family:'Noto Sans JP',sans-serif;">SHIZEN RESORTは、「静けさ」と「自然」こそが最上の贅沢だという信念のもとに生まれました。羊蹄山を望む絶景、手付かずの白樺林、澄んだ空気。</p>
+        <p style="color:rgba(247,243,238,0.7);font-size:.82rem;line-height:2.1;margin-top:1rem;font-family:'Noto Sans JP',sans-serif;">全8棟の離れには、それぞれ専用の露天温泉風呂を完備。自家農園から届く食材を使った料理長のコース料理で、五感すべてが満たされるひとときを。</p>
       </div>
       <div style="position:relative;">
         <img src="https://images.unsplash.com/photo-1445019980597-93fa8acb246c?w=600&q=80" style="width:100%;aspect-ratio:3/4;object-fit:cover;" alt="">
@@ -1096,6 +1100,14 @@ function filterEC(btn,cat){
 
 /* ── Initial: run about page bars after small delay ── */
 setTimeout(animateBars,600);
+
+/* ── Image error fallback ── */
+document.querySelectorAll('img').forEach(img=>{
+  img.addEventListener('error',function(){
+    this.style.opacity='0.15';
+    this.style.filter='grayscale(1)';
+  });
+});
 </script>
 </body>
 </html>
