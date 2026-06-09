@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Web Creator Portfolio</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Noto+Serif+JP:wght@300;400;500&family=Noto+Sans+JP:wght@300;400;500&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"/>
+<script>
+tailwind.config={theme:{extend:{colors:{
+  ink:'#0A0A0F',
+  ink2:'#13131A',
+  ink3:'#1E1E2A',
+  neon:'#7FFFD4',
+  neonDim:'rgba(127,255,212,0.15)',
+  amber:'#F5A623',
+  cream:'#F5F0E8',
+  espresso:'#2C1A0E',
+  latte:'#C4A882',
+  mocha:'#7A5C3E',
+  warm:'#E8DDD0',
+  sage:'#8A9E85',
+  sand:'#F2EDE4',
+  charcoal:'#1C1C1C',
+  gold:'#C9A84C',
+  hotelDark:'#0D0C0A',
+  hotelGold:'#C9A84C',
+  hotelCream:'#F7F3EE',
+},fontFamily:{
+  mono:['"Space Mono"','monospace'],
+  serif:['"Cormorant Garamond"','"Noto Serif JP"','serif'],
+  sans:['"Noto Sans JP"','sans-serif'],
+}}}}
+</script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:#0A0A0F;color:#fff;font-family:'Noto Sans JP',sans-serif;overflow-x:hidden;}
+
+/* ── Page system ── */
+.page{display:none;min-height:100vh;}
+.page.active{display:block;}
+
+/* ── Noise overlay ── */
+body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:9998;opacity:.6;}
+
+/* ── GLOBAL NAV ── */
+#global-nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(10,10,15,0.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(127,255,212,0.08);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:56px;}
+.nav-logo{font-family:'Space Mono',monospace;font-size:.85rem;color:#7FFFD4;letter-spacing:.1em;}
+.nav-links{display:flex;gap:0;list-style:none;}
+.nav-links li button{background:none;border:none;color:rgba(255,255,255,0.45);font-family:'Noto Sans JP',sans-serif;font-size:.72rem;letter-spacing:.15em;padding:.5rem 1rem;cursor:pointer;transition:color .2s;position:relative;}
+.nav-links li button::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:0;height:1px;background:#7FFFD4;transition:width .25s;}
+.nav-links li button:hover{color:#fff;}
+.nav-links li button:hover::after,.nav-links li button.active-nav::after{width:70%;}
+.nav-links li button.active-nav{color:#7FFFD4;}
+
+/* ── Scroll reveal ── */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .65s ease,transform .65s ease;}
+.reveal.visible{opacity:1;transform:none;}
+
+/* ── Custom cursor ── */
+#cursor{position:fixed;width:12px;height:12px;background:#7FFFD4;border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s,opacity .2s;mix-blend-mode:difference;}
+#cursor-ring{position:fixed;width:36px;height:36px;border:1px solid rgba(127,255,212,0.4);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .3s,height .3s,transform .08s linear;}
+@media(pointer:coarse){#cursor,#cursor-ring{display:none;}}
+
+/* ════════════════════════════
+   PAGE 1 — ABOUT / PORTFOLIO
+════════════════════════════ */
+#page-about{background:#0A0A0F;padding-top:56px;}
+
+/* Hero */
+.about-hero{min-height:100vh;display:flex;align-items:center;padding:0 clamp(1.5rem,6vw,6rem);position:relative;overflow:hidden;}
+.grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(127,255,212,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(127,255,212,0.04) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 30%,transparent 100%);}
+.glitch-text{font-family:'Space Mono',monospace;font-size:clamp(3rem,10vw,9rem);font-weight:700;line-height:.9;letter-spacing:-.02em;color:#fff;position:relative;}
+.glitch-text::before,.glitch-text::after{content:attr(data-text);position:absolute;top:0;left:0;width:100%;height:100%;}
+.glitch-text::before{color:#7FFFD4;clip-path:polygon(0 0,100% 0,100% 45%,0 45%);transform:translate(-3px,0);opacity:.7;animation:glitch1 4s infinite;}
+.glitch-text::after{color:#ff6b6b;clip-path:polygon(0 55%,100% 55%,100% 100%,0 100%);transform:translate(3px,0);opacity:.5;animation:glitch2 4s infinite 2s;}
+@keyframes glitch1{0%,90%,100%{transform:translate(-3px,0);}92%{transform:translate(3px,-2px);}94%{transform:translate(-3px,2px);}96%{transform:translate(0,0);}}
+@keyframes glitch2{0%,90%,100%{transform:translate(3px,0);}92%{transform:translate(-3px,2px);}94%{transform:translate(3px,-2px);}96%{transform:translate(0,0);}}
+
+.neon-line{height:1px;background:linear-gradient(90deg,transparent,#7FFFD4,transparent);margin:2rem 0;}
+
+.skill-tag{display:inline-block;border:1px solid rgba(127,255,212,0.3);color:#7FFFD4;font-family:'Space Mono',monospace;font-size:.65rem;letter-spacing:.15em;padding:.35rem .85rem;margin:.25rem;transition:all .2s;}
+.skill-tag:hover{background:rgba(127,255,212,0.12);border-color:#7FFFD4;}
+
+.skill-bar-wrap{margin:.6rem 0;}
+.skill-bar-label{display:flex;justify-content:space-between;font-family:'Space Mono',monospace;font-size:.65rem;color:rgba(255,255,255,0.5);letter-spacing:.1em;margin-bottom:.35rem;}
+.skill-bar-track{height:3px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden;}
+.skill-bar-fill{height:100%;background:linear-gradient(90deg,#7FFFD4,#4dd9b0);border-radius:2px;width:0;transition:width 1.2s cubic-bezier(.4,0,.2,1);}
+
+/* Work cards */
+.work-card{background:#13131A;border:1px solid rgba(255,255,255,0.06);overflow:hidden;cursor:pointer;transition:transform .3s,border-color .3s;position:relative;}
+.work-card:hover{transform:translateY(-4px);border-color:rgba(127,255,212,0.3);}
+.work-card-thumb{height:200px;object-fit:cover;width:100%;display:block;transition:transform .5s;}
+.work-card:hover .work-card-thumb{transform:scale(1.04);}
+.work-card-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(10,10,15,.9));display:flex;align-items:flex-end;padding:1.5rem;opacity:0;transition:opacity .3s;}
+.work-card:hover .work-card-overlay{opacity:1;}
+
+/* Terminal block */
+.terminal{background:#13131A;border:1px solid rgba(127,255,212,0.15);padding:1.5rem;font-family:'Space Mono',monospace;font-size:.75rem;line-height:1.9;}
+.terminal .prompt{color:#7FFFD4;}
+.terminal .output{color:rgba(255,255,255,0.6);}
+.terminal .cursor-blink{display:inline-block;width:8px;height:14px;background:#7FFFD4;animation:blink .9s step-end infinite;vertical-align:middle;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+
+/* Floating badge */
+.status-badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(127,255,212,0.08);border:1px solid rgba(127,255,212,0.2);padding:.4rem 1rem;font-family:'Space Mono',monospace;font-size:.65rem;color:#7FFFD4;letter-spacing:.1em;}
+.status-dot{width:6px;height:6px;background:#7FFFD4;border-radius:50%;animation:pulse-dot 2s ease-in-out infinite;}
+@keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.5;transform:scale(.7);}}
+
+/* Section labels */
+.section-label{font-family:'Space Mono',monospace;font-size:.65rem;letter-spacing:.25em;color:rgba(127,255,212,0.6);text-transform:uppercase;}
+
+/* ════════════════════════════
+   PAGE 2 — CAFÉ LUMIÈRE
+════════════════════════════ */
+#page-cafe{background:#F5F0E8;padding-top:56px;}
+.cafe-noise::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:9997;opacity:.5;}
+.cafe-divider{width:40px;height:1px;background:#C4A882;margin:1.5rem auto;}
+.menu-card-cafe{transition:transform .35s,box-shadow .35s;background:rgba(255,255,255,0.6);}
+.menu-card-cafe:hover{transform:translateY(-6px);box-shadow:0 20px 40px rgba(44,26,14,.12);}
+.cafe-input:focus{outline:none;border-color:#C4A882!important;box-shadow:0 0 0 3px rgba(196,168,130,.2);}
+.cafe-nav-link{position:relative;}
+.cafe-nav-link::after{content:'';position:absolute;left:0;bottom:-2px;width:0;height:1px;background:#C4A882;transition:width .3s;}
+.cafe-nav-link:hover::after{width:100%;}
+
+/* ════════════════════════════
+   PAGE 3 — EC SITE (SŌZAI)
+════════════════════════════ */
+#page-ec{background:#F2EDE4;padding-top:56px;color:#1C1C1C;}
+.ec-hero{min-height:92vh;display:grid;grid-template-columns:1fr 1fr;overflow:hidden;}
+.ec-hero-left{background:#1C1C1C;display:flex;flex-direction:column;justify-content:center;padding:clamp(2rem,6vw,6rem);}
+.ec-hero-right{background:url('https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=900&q=80') center/cover no-repeat;position:relative;}
+.ec-hero-right::after{content:'';position:absolute;inset:0;background:rgba(28,28,28,0.15);}
+.ec-tag{display:inline-block;background:#1C1C1C;color:#F2EDE4;font-size:.6rem;letter-spacing:.25em;padding:.35rem .9rem;}
+.ec-tag-outline{display:inline-block;border:1px solid #1C1C1C;color:#1C1C1C;font-size:.6rem;letter-spacing:.2em;padding:.3rem .8rem;}
+.product-card{background:#fff;overflow:hidden;cursor:pointer;transition:box-shadow .3s;}
+.product-card:hover{box-shadow:0 12px 32px rgba(28,28,28,.1);}
+.product-card-img{height:320px;object-fit:cover;width:100%;transition:transform .5s;}
+.product-card:hover .product-card-img{transform:scale(1.03);}
+.add-btn{width:100%;background:#1C1C1C;color:#F2EDE4;border:none;font-family:'Noto Sans JP',sans-serif;font-size:.7rem;letter-spacing:.2em;padding:.85rem;cursor:pointer;transition:background .25s;}
+.add-btn:hover{background:#333;}
+.ec-nav-link{color:rgba(28,28,28,0.55);font-size:.72rem;letter-spacing:.12em;transition:color .2s;text-decoration:none;cursor:pointer;}
+.ec-nav-link:hover{color:#1C1C1C;}
+.category-pill{background:transparent;border:1px solid rgba(28,28,28,0.2);color:rgba(28,28,28,0.6);font-size:.65rem;letter-spacing:.15em;padding:.4rem 1.2rem;cursor:pointer;transition:all .2s;font-family:'Noto Sans JP',sans-serif;}
+.category-pill.active,.category-pill:hover{background:#1C1C1C;color:#F2EDE4;border-color:#1C1C1C;}
+.filter-btn{width:36px;height:36px;border:1px solid rgba(28,28,28,0.2);background:none;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;}
+.filter-btn:hover{background:#1C1C1C;border-color:#1C1C1C;}
+.filter-btn:hover svg{stroke:#F2EDE4;}
+.cart-count{position:absolute;top:-6px;right:-6px;width:16px;height:16px;background:#1C1C1C;color:#F2EDE4;border-radius:50%;font-size:.55rem;display:flex;align-items:center;justify-content:center;}
+.badge-new{background:#1C1C1C;color:#F2EDE4;font-size:.55rem;letter-spacing:.12em;padding:.2rem .6rem;position:absolute;top:.75rem;left:.75rem;}
+.badge-sale{background:#D4574A;color:#fff;font-size:.55rem;letter-spacing:.12em;padding:.2rem .6rem;position:absolute;top:.75rem;left:.75rem;}
+
+/* ════════════════════════════
+   PAGE 4 — HOTEL LP
+════════════════════════════ */
+#page-hotel{background:#0D0C0A;color:#F7F3EE;padding-top:56px;}
+.hotel-hero{min-height:100vh;background:url('https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=1600&q=80') center/cover no-repeat;position:relative;display:flex;flex-direction:column;justify-content:flex-end;padding:0 clamp(2rem,6vw,5rem) clamp(3rem,6vh,5rem);}
+.hotel-hero::before{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(13,12,10,0.85) 0%,rgba(13,12,10,0.3) 50%,rgba(13,12,10,0.5) 100%);}
+.hotel-divider{width:1px;height:32px;background:rgba(201,168,76,0.5);margin:0 auto;}
+.hotel-label{font-size:.6rem;letter-spacing:.3em;color:rgba(201,168,76,0.7);text-transform:uppercase;}
+.hotel-input{width:100%;background:rgba(247,243,238,0.05);border:1px solid rgba(247,243,238,0.12);color:#F7F3EE;font-family:'Noto Sans JP',sans-serif;font-size:.8rem;padding:.85rem 1rem;transition:border-color .25s;}
+.hotel-input:focus{outline:none;border-color:rgba(201,168,76,0.5);}
+.hotel-input::placeholder{color:rgba(247,243,238,0.3);}
+.hotel-input option{background:#1a1916;}
+.room-card{background:#13120F;border:1px solid rgba(201,168,76,0.1);overflow:hidden;cursor:pointer;transition:border-color .3s;}
+.room-card:hover{border-color:rgba(201,168,76,0.35);}
+.room-img{height:260px;object-fit:cover;width:100%;transition:transform .5s;}
+.room-card:hover .room-img{transform:scale(1.04);}
+.book-btn{background:transparent;border:1px solid rgba(201,168,76,0.5);color:#C9A84C;font-family:'Noto Sans JP',sans-serif;font-size:.7rem;letter-spacing:.2em;padding:.7rem 2rem;cursor:pointer;transition:all .3s;}
+.book-btn:hover{background:#C9A84C;color:#0D0C0A;}
+.book-btn-solid{background:#C9A84C;border:none;color:#0D0C0A;font-family:'Noto Sans JP',sans-serif;font-size:.75rem;letter-spacing:.2em;padding:.9rem 2.5rem;cursor:pointer;transition:background .25s;}
+.book-btn-solid:hover{background:#d4b560;}
+.amenity-item{display:flex;align-items:center;gap:.75rem;padding:1rem 0;border-bottom:1px solid rgba(247,243,238,0.06);}
+.amenity-icon{width:40px;height:40px;border:1px solid rgba(201,168,76,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:#0A0A0F;}
+::-webkit-scrollbar-thumb{background:#7FFFD4;border-radius:2px;}
+#page-cafe ::-webkit-scrollbar-track{background:#F5F0E8;}
+#page-cafe ::-webkit-scrollbar-thumb{background:#C4A882;}
+</style>
+</head>
+<body>
+
+<!-- Custom cursor -->
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- ════════════ GLOBAL NAV ════════════ -->
+<nav id="global-nav">
+  <span class="nav-logo">[ Portfolio ]</span>
+  <ul class="nav-links">
+    <li><button onclick="showPage('about')"  id="nav-about"  class="active-nav">ABOUT</button></li>
+    <li><button onclick="showPage('cafe')"   id="nav-cafe">CAFÉ</button></li>
+    <li><button onclick="showPage('ec')"     id="nav-ec">EC SITE</button></li>
+    <li><button onclick="showPage('hotel')"  id="nav-hotel">HOTEL LP</button></li>
+  </ul>
+</nav>
+
+<!-- ══════════════════════════════════════
+     PAGE 1 — ABOUT
+══════════════════════════════════════ -->
+<div id="page-about" class="page active">
+
+  <!-- Hero -->
+  <section class="about-hero">
+    <div class="grid-bg"></div>
+    <div class="max-w-6xl mx-auto w-full relative z-10 grid lg:grid-cols-2 gap-16 items-center py-20">
+
+      <!-- Left -->
+      <div>
+        <div class="status-badge mb-8 reveal">
+          <span class="status-dot"></span>
+          <span>案件受付中 — Available for work</span>
+        </div>
+        <div class="glitch-text reveal" data-text="Karasu&#10;Creator">
+          Karasu<br>Creator
+        </div>
+        <div class="neon-line reveal"></div>
+        <p class="text-white/55 font-light text-sm leading-relaxed max-w-md mb-8 reveal" style="font-family:'Noto Sans JP',sans-serif;">
+          HTML / CSS / JavaScript / WordPress を武器に、<br>
+          「ただ見た目がいい」だけでなく<br>
+          <span style="color:rgba(127,255,212,0.8)">「成果に直結するWeb体験」</span>をゼロから設計・実装します。
+        </p>
+        <div class="flex flex-wrap gap-0 mb-8 reveal">
+          <span class="skill-tag">HTML5</span>
+          <span class="skill-tag">CSS3</span>
+          <span class="skill-tag">JavaScript</span>
+          <span class="skill-tag">Tailwind CSS</span>
+          <span class="skill-tag">WordPress</span>
+          <span class="skill-tag">Figma</span>
+          <span class="skill-tag">Responsive</span>
+          <span class="skill-tag">SEO</span>
+        </div>
+        <div class="flex gap-4 reveal">
+          <button onclick="showPage('cafe')" style="background:#7FFFD4;color:#0A0A0F;font-family:'Space Mono',monospace;font-size:.7rem;letter-spacing:.15em;padding:.85rem 2rem;border:none;cursor:pointer;transition:opacity .2s;" onmouseover="this.style.opacity='.8'" onmouseout="this.style.opacity='1'">
+            WORKS →
+          </button>
+          <button onclick="document.getElementById('about-contact').scrollIntoView({behavior:'smooth'})" style="background:none;border:1px solid rgba(127,255,212,0.35);color:#7FFFD4;font-family:'Space Mono',monospace;font-size:.7rem;letter-spacing:.15em;padding:.85rem 2rem;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='#7FFFD4'" onmouseout="this.style.borderColor='rgba(127,255,212,0.35)'">
+            CONTACT
+          </button>
+        </div>
+      </div>
+
+      <!-- Right: Terminal -->
+      <div class="reveal" style="transition-delay:.2s">
+        <div style="display:flex;align-items:center;gap:.5rem;background:#1E1E2A;border:1px solid rgba(127,255,212,0.15);padding:.6rem 1rem;border-bottom:none;">
+          <span style="width:10px;height:10px;background:#ff5f56;border-radius:50%;"></span>
+          <span style="width:10px;height:10px;background:#ffbd2e;border-radius:50%;"></span>
+          <span style="width:10px;height:10px;background:#27c93f;border-radius:50%;"></span>
+          <span style="font-family:'Space Mono',monospace;font-size:.6rem;color:rgba(255,255,255,0.3);margin-left:.5rem;">portfolio ~ bash</span>
+        </div>
+        <div class="terminal">
+          <div><span class="prompt">$ </span><span class="output">whoami</span></div>
+          <div><span class="output" style="color:rgba(127,255,212,0.8);">Karasu — フリーランスWeb制作者</span></div>
+          <div style="margin-top:.5rem"><span class="prompt">$ </span><span class="output">cat skills.txt</span></div>
+          <div><span class="output">▸ フロントエンド実装 (HTML/CSS/JS/Tailwind)</span></div>
+          <div><span class="output">▸ WordPress カスタムテーマ開発</span></div>
+          <div><span class="output">▸ UIデザイン (Figma → コード)</span></div>
+          <div><span class="output">▸ レスポンシブ / モバイルファースト対応</span></div>
+          <div><span class="output">▸ SEO最適化 / パフォーマンス改善</span></div>
+          <div style="margin-top:.5rem"><span class="prompt">$ </span><span class="output">ls works/</span></div>
+          <div><span class="output" style="color:rgba(127,255,212,0.7);">cafe-lumiere/&nbsp;&nbsp;sozai-ec/&nbsp;&nbsp;hotel-shizen/</span></div>
+          <div style="margin-top:.5rem"><span class="prompt">$ </span><span class="cursor-blink"></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skills -->
+  <section style="padding:5rem clamp(1.5rem,6vw,6rem);background:#0A0A0F;">
+    <div class="max-w-5xl mx-auto">
+      <div class="grid md:grid-cols-2 gap-16">
+        <div class="reveal">
+          <p class="section-label mb-6">Technical Skills</p>
+          <div class="skill-bar-wrap">
+            <div class="skill-bar-label"><span>HTML / CSS</span><span id="pct-html">0%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-pct="90"></div></div>
+          </div>
+          <div class="skill-bar-wrap">
+            <div class="skill-bar-label"><span>JavaScript</span><span id="pct-js">0%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-pct="72"></div></div>
+          </div>
+          <div class="skill-bar-wrap">
+            <div class="skill-bar-label"><span>Tailwind CSS</span><span id="pct-tw">0%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-pct="85"></div></div>
+          </div>
+          <div class="skill-bar-wrap">
+            <div class="skill-bar-label"><span>WordPress</span><span id="pct-wp">0%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-pct="78"></div></div>
+          </div>
+          <div class="skill-bar-wrap">
+            <div class="skill-bar-label"><span>Figma / デザイン</span><span id="pct-fg">0%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-pct="68"></div></div>
+          </div>
+        </div>
+        <div class="reveal" style="transition-delay:.15s">
+          <p class="section-label mb-6">About Me</p>
+          <p style="color:rgba(255,255,255,0.55);font-size:.85rem;line-height:2;font-family:'Noto Sans JP',sans-serif;">
+            クラウドワークスを中心に活動するWebクリエイターです。<br><br>
+            「デザインの美しさ」と「使いやすさ」を両立させ、<br>
+            クライアントのビジネス目標に直結するWebサイトを<br>
+            制作することを
+            モットーにしています。<br><br>
+            美容室・飲食店・EC・ホテルなど多様なジャンルに対応。<br>
+            Figmaでのデザインカンプ作成から<br>
+            コーディング・WordPressへの組み込みまで<br>
+            一貫してお任せください。
+          </p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:2rem;">
+            <div style="background:#13131A;border:1px solid rgba(255,255,255,0.06);padding:1.25rem;">
+              <div style="font-family:'Space Mono',monospace;font-size:1.8rem;color:#7FFFD4;">3+</div>
+              <div style="font-size:.7rem;color:rgba(255,255,255,0.4);letter-spacing:.1em;margin-top:.25rem;">制作実績</div>
+            </div>
+            <div style="background:#13131A;border:1px solid rgba(255,255,255,0.06);padding:1.25rem;">
+              <div style="font-family:'Space Mono',monospace;font-size:1.8rem;color:#7FFFD4;">100%</div>
+              <div style="font-size:.7rem;color:rgba(255,255,255,0.4);letter-spacing:.1em;margin-top:.25rem;">納期遵守率</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Works grid -->
+  <section style="padding:5rem clamp(1.5rem,6vw,6rem);background:#0D0D14;">
+    <div class="max-w-5xl mx-auto">
+      <p class="section-label mb-3 reveal">Selected Works</p>
+      <h2 style="font-family:'Space Mono',monospace;font-size:clamp(1.8rem,4vw,3rem);font-weight:700;color:#fff;margin-bottom:3rem;" class="reveal">制作例</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;">
+        <!-- Café -->
+        <div class="work-card reveal" onclick="showPage('cafe')" style="transition-delay:0s">
+          <div style="position:relative;overflow:hidden;">
+            <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=600&q=70" class="work-card-thumb" alt="Café Lumière">
+            <div class="work-card-overlay">
+              <span style="font-family:'Space Mono',monospace;font-size:.7rem;color:#7FFFD4;letter-spacing:.15em;">VIEW PROJECT →</span>
+            </div>
+          </div>
+          <div style="padding:1.25rem;">
+            <p style="font-family:'Space Mono',monospace;font-size:.6rem;color:rgba(127,255,212,0.6);letter-spacing:.2em;margin-bottom:.4rem;">01 / RESTAURANT</p>
+            <h3 style="font-size:1rem;font-weight:500;color:#fff;">Café Lumière</h3>
+            <p style="font-size:.75rem;color:rgba(255,255,255,0.4);margin-top:.4rem;">代官山の隠れ家カフェ — ランディングページ</p>
+          </div>
+        </div>
+        <!-- EC -->
+        <div class="work-card reveal" onclick="showPage('ec')" style="transition-delay:.1s">
+          <div style="position:relative;overflow:hidden;">
+            <img src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=600&q=70" class="work-card-thumb" alt="SŌZAI">
+            <div class="work-card-overlay">
+              <span style="font-family:'Space Mono',monospace;font-size:.7rem;color:#7FFFD4;letter-spacing:.15em;">VIEW PROJECT →</span>
+            </div>
+          </div>
+          <div style="padding:1.25rem;">
+            <p style="font-family:'Space Mono',monospace;font-size:.6rem;color:rgba(127,255,212,0.6);letter-spacing:.2em;margin-bottom:.4rem;">02 / EC SITE</p>
+            <h3 style="font-size:1rem;font-weight:500;color:#fff;">SŌZAI — サステナブルアパレル</h3>
+            <p style="font-size:.75rem;color:rgba(255,255,255,0.4);margin-top:.4rem;">エシカルファッション ECサイト</p>
+          </div>
+        </div>
+        <!-- Hotel -->
+        <div class="work-card reveal" onclick="showPage('hotel')" style="transition-delay:.2s">
+          <div style="position:relative;overflow:hidden;">
+            <img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600&q=70" class="work-card-thumb" alt="SHIZEN">
+            <div class="work-card-overlay">
+              <span style="font-family:'Space Mono',monospace;font-size:.7rem;color:#7FFFD4;letter-spacing:.15em;">VIEW PROJECT →</span>
+            </div>
+          </div>
+          <div style="padding:1.25rem;">
+            <p style="font-family:'Space Mono',monospace;font-size:.6rem;color:rgba(127,255,212,0.6);letter-spacing:.2em;margin-bottom:.4rem;">03 / HOTEL LP</p>
+            <h3 style="font-size:1rem;font-weight:500;color:#fff;">SHIZEN RESORT</h3>
+            <p style="font-size:.75rem;color:rgba(255,255,255,0.4);margin-top:.4rem;">高級リゾートホテル ランディングページ</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Service -->
+  <section style="padding:5rem clamp(1.5rem,6vw,6rem);background:#0A0A0F;">
+    <div class="max-w-5xl mx-auto">
+      <p class="section-label mb-3 reveal">Services</p>
+      <h2 style="font-family:'Space Mono',monospace;font-size:clamp(1.8rem,4vw,3rem);font-weight:700;color:#fff;margin-bottom:3rem;" class="reveal">提供サービス</h2>
+      <div style="display:grid;md:grid-cols-3;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1px;background:rgba(255,255,255,0.06);">
+        <div class="reveal" style="background:#0A0A0F;padding:2rem;border-left:2px solid #7FFFD4;">
+          <div style="font-family:'Space Mono',monospace;font-size:.6rem;color:rgba(127,255,212,0.5);letter-spacing:.2em;margin-bottom:1rem;">SERVICE 01</div>
+          <h3 style="font-size:1rem;color:#fff;font-weight:500;margin-bottom:.75rem;">Webサイト制作</h3>
+          <p style="font-size:.78rem;color:rgba(255,255,255,0.45);line-height:1.9;">LP・コーポレートサイト・ポートフォリオなど、目的に合わせたサイトをHTML/CSS/JSでフルスクラッチ実装。</p>
+          <div style="margin-top:1.5rem;font-family:'Space Mono',monospace;font-size:.8rem;color:#7FFFD4;">¥30,000 〜</div>
+        </div>
+        <div class="reveal" style="background:#0A0A0F;padding:2rem;border-left:2px solid #7FFFD4;transition-delay:.1s">
+          <div style="font-family:'Space Mono',monospace;font-size:.6rem;color:rgba(127,255,212,0.5);letter-spacing:.2em;margin-bottom:1rem;">SERVICE 02</div>
+          <h3 style="font-size:1rem;color:#fff;font-weight:500;margin-bottom:.75rem;">WordPress構築</h3>
+          <p style="font-size:.78rem;color:rgba(255,255,255,0.45);line-height:1.9;">オリジナルテーマ制作・既存テーマのカスタマイズ・プラグイン設定まで。自分で更新できるサイトを構築します。</p>
+          <div style="margin-top:1.5rem;font-family:'Space Mono',monospace;font-size:.8rem;color:#7FFFD4;">¥50,000 〜</div>
+        </div>
+        <div class="reveal" style="background:#0A0A0F;padding:2rem;border-left:2px solid #7FFFD4;transition-delay:.2s">
+          <div style="font-family:'Space Mono',monospace;font-size:.6rem;color:rgba(127,255,212,0.5);letter-spacing:.2em;margin-bottom:1rem;">SERVICE 03</div>
+          <h3 style="font-size:1rem;color:#fff;font-weight:500;margin-bottom:.75rem;">デザイン → コーディング</h3>
+          <p style="font-size:.78rem;color:rgba(255,255,255,0.45);line-height:1.9;">Figmaデザインカンプを受け取り、ピクセルパーフェクトにHTML/CSSへ変換。レスポンシブ対応も込みです。</p>
+          <div style="margin-top:1.5rem;font-family:'Space Mono',monospace;font-size:.8rem;color:#7FFFD4;">¥20,000 〜</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="about-contact" style="padding:5rem clamp(1.5rem,6vw,6rem);background:#0D0D14;">
+    <div class="max-w-2xl mx-auto">
+      <p class="section-label mb-3 reveal text-center">Contact</p>
+      <h2 style="font-family:'Space Mono',monospace;font-size:clamp(1.8rem,4vw,3rem);font-weight:700;color:#fff;text-align:center;margin-bottom:.75rem;" class="reveal">お仕事のご依頼</h2>
+      <p style="text-align:center;color:rgba(255,255,255,0.4);font-size:.82rem;margin-bottom:3rem;" class="reveal">案件のご依頼・お見積りはこちらから。2営業日以内にご返信いたします。</p>
+      <div class="reveal" style="display:flex;flex-direction:column;gap:1rem;">
+        <input type="text" placeholder="お名前 / 会社名" style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:#fff;font-family:'Noto Sans JP',sans-serif;font-size:.82rem;padding:.9rem 1rem;transition:border-color .25s;" onfocus="this.style.borderColor='rgba(127,255,212,0.5)'" onblur="this.style.borderColor='rgba(255,255,255,0.1)'" />
+        <input type="email" placeholder="メールアドレス" style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:#fff;font-family:'Noto Sans JP',sans-serif;font-size:.82rem;padding:.9rem 1rem;transition:border-color .25s;" onfocus="this.style.borderColor='rgba(127,255,212,0.5)'" onblur="this.style.borderColor='rgba(255,255,255,0.1)'"/>
+        <select style="width:100%;background:#13131A;border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.5);font-family:'Noto Sans JP',sans-serif;font-size:.82rem;padding:.9rem 1rem;-webkit-appearance:none;">
+          <option>ご依頼の種類を選択</option>
+          <option>Webサイト新規制作</option>
+          <option>WordPress構築</option>
+          <option>コーディング（デザインあり）</option>
+          <option>既存サイトの修正・改善</option>
+          <option>その他</option>
+        </select>
+        <textarea rows="5" placeholder="ご要件・ご予算・希望納期などをご記入ください" style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:#fff;font-family:'Noto Sans JP',sans-serif;font-size:.82rem;padding:.9rem 1rem;resize:none;transition:border-color .25s;" onfocus="this.style.borderColor='rgba(127,255,212,0.5)'" onblur="this.style.borderColor='rgba(255,255,255,0.1)'"></textarea>
+        <button style="background:#7FFFD4;color:#0A0A0F;font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.2em;padding:1rem;border:none;cursor:pointer;transition:opacity .2s;" onmouseover="this.style.opacity='.8'" onmouseout="this.style.opacity='1'">
+          SEND MESSAGE →
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer style="background:#0A0A0F;border-top:1px solid rgba(127,255,212,0.07);padding:2rem clamp(1.5rem,6vw,6rem);display:flex;flex-direction:column;align-items:center;gap:1rem;text-align:center;">
+    <span style="font-family:'Space Mono',monospace;font-size:.75rem;color:#7FFFD4;">[ Portfolio ]</span>
+    <p style="font-size:.68rem;color:rgba(255,255,255,0.25);letter-spacing:.15em;">© 2025 Web Creator. Built with HTML / Tailwind CSS.</p>
+  </footer>
+</div>
+
+<!-- ══════════════════════════════════════
+     PAGE 2 — CAFÉ LUMIÈRE
+══════════════════════════════════════ -->
+<div id="page-cafe" class="page cafe-noise">
+
+  <!-- Café Nav -->
+  <nav style="background:transparent;position:absolute;top:56px;left:0;right:0;z-index:100;padding:1.25rem 2rem;display:flex;align-items:center;justify-content:space-between;transition:all .4s;" id="cafe-subnav">
+    <a href="#" style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:300;color:#F5F0E8;letter-spacing:.15em;line-height:1.1;text-decoration:none;">Café<br><em style="font-size:1.7rem;font-style:italic;color:#C4A882;">Lumière</em></a>
+    <ul style="display:flex;gap:2.5rem;list-style:none;color:rgba(245,240,232,0.8);font-size:.72rem;letter-spacing:.18em;">
+      <li><a href="#cafe-features" class="cafe-nav-link" style="color:inherit;text-decoration:none;transition:color .2s;">こだわり</a></li>
+      <li><a href="#cafe-menu" class="cafe-nav-link" style="color:inherit;text-decoration:none;transition:color .2s;">メニュー</a></li>
+      <li><a href="#cafe-contact" class="cafe-nav-link" style="color:inherit;text-decoration:none;transition:color .2s;">予約</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero -->
+  <section style="min-height:100vh;background:linear-gradient(160deg,rgba(44,26,14,0.55) 0%,rgba(44,26,14,0.2) 60%,rgba(44,26,14,0.7) 100%),url('https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=1600&q=80') center/cover no-repeat;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;">
+    <span style="height:64px;width:1px;background:rgba(196,168,130,0.4);display:block;margin:0 auto 2rem;"></span>
+    <p style="font-family:'Cormorant Garamond',serif;font-style:italic;color:#C4A882;font-size:1.1rem;letter-spacing:.25em;">— Daikanyama, Tokyo —</p>
+    <h1 style="font-family:'Cormorant Garamond',serif;color:#F5F0E8;font-size:clamp(3.5rem,10vw,8rem);font-weight:300;letter-spacing:.04em;line-height:.9;margin-top:1.5rem;">Café<br><em style="font-style:italic;">Lumière</em></h1>
+    <p style="color:rgba(245,240,232,0.65);font-size:.82rem;letter-spacing:.25em;margin-top:1.5rem;font-family:'Noto Sans JP',sans-serif;">光と静寂が交差する、大人の隠れ家カフェ</p>
+    <div class="cafe-divider"></div>
+    <p style="color:rgba(245,240,232,0.55);font-size:.88rem;font-family:'Noto Sans JP',sans-serif;line-height:2;max-width:400px;">厳選したスペシャルティコーヒーと、<br>季節の食材を使った手作りの料理で、<br>日常の喧騒を忘れる時間をお届けします。</p>
+    <div style="display:flex;gap:1rem;margin-top:2.5rem;flex-wrap:wrap;justify-content:center;">
+      <a href="#cafe-menu" style="background:#C4A882;color:#2C1A0E;font-size:.8rem;letter-spacing:.2em;padding:1rem 2.5rem;text-decoration:none;transition:background .25s;font-family:'Noto Sans JP',sans-serif;">メニューを見る</a>
+      <a href="#cafe-contact" style="border:1px solid rgba(245,240,232,0.5);color:#F5F0E8;font-size:.8rem;letter-spacing:.2em;padding:1rem 2.5rem;text-decoration:none;font-family:'Noto Sans JP',sans-serif;">テーブルを予約する</a>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section id="cafe-features" style="padding:6rem clamp(1.5rem,6vw,5rem);background:#2C1A0E;">
+    <div style="max-width:900px;margin:0 auto;text-align:center;margin-bottom:4rem;">
+      <p style="font-family:'Cormorant Garamond',serif;font-style:italic;color:#C4A882;font-size:1.1rem;letter-spacing:.2em;">Our Story</p>
+      <h2 style="font-family:'Cormorant Garamond',serif;color:#F5F0E8;font-size:clamp(2.5rem,5vw,4rem);font-weight:300;margin-top:.5rem;">三つの<em style="font-style:italic;color:#C4A882;">こだわり</em></h2>
+      <div class="cafe-divider"></div>
+    </div>
+    <div style="max-width:900px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:3rem;">
+      <div style="text-align:center;">
+        <div style="width:56px;height:56px;border:1px solid rgba(196,168,130,0.3);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;">
+          <svg width="22" height="22" fill="none" stroke="#C4A882" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 3v1m0 16v1M4.22 4.22l.7.7m13.16 13.16.7.7M3 12H4m16 0h1M4.22 19.78l.7-.7M18.36 5.64l.7-.7"/></svg>
+        </div>
+        <h3 style="font-family:'Cormorant Garamond',serif;color:#F5F0E8;font-size:1.4rem;font-weight:300;margin-bottom:.75rem;">スペシャルティコーヒー</h3>
+        <div style="width:30px;height:1px;background:rgba(196,168,130,0.4);margin:0 auto .75rem;"></div>
+        <p style="color:rgba(245,240,232,0.5);font-size:.78rem;line-height:1.9;font-family:'Noto Sans JP',sans-serif;">エチオピア・コロンビア・グアテマラなど、世界中のシングルオリジンを厳選。SCA認定バリスタが毎日その日の気候に合わせて抽出方法を調整します。</p>
+      </div>
+      <div style="text-align:center;">
+        <div style="width:56px;height:56px;border:1px solid rgba(196,168,130,0.3);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;">
+          <svg width="22" height="22" fill="none" stroke="#C4A882" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2a7 7 0 00-7 7c0 3.5 2.5 6.5 6 7.7V20h2v-3.3c3.5-1.2 6-4.2 6-7.7a7 7 0 00-7-7z"/></svg>
+        </div>
+        <h3 style="font-family:'Cormorant Garamond',serif;color:#F5F0E8;font-size:1.4rem;font-weight:300;margin-bottom:.75rem;">手作りフード</h3>
+        <div style="width:30px;height:1px;background:rgba(196,168,130,0.4);margin:0 auto .75rem;"></div>
+        <p style="color:rgba(245,240,232,0.5);font-size:.78rem;line-height:1.9;font-family:'Noto Sans JP',sans-serif;">近郊農家と直接契約した旬の野菜、国産小麦を使った自家製パン。毎朝シェフが仕込む「引き算の料理」で体に優しい素材の味を届けます。</p>
+      </div>
+      <div style="text-align:center;">
+        <div style="width:56px;height:56px;border:1px solid rgba(196,168,130,0.3);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;">
+          <svg width="22" height="22" fill="none" stroke="#C4A882" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline stroke-linecap="round" stroke-linejoin="round" points="9 22 9 12 15 12 15 22"/></svg>
+        </div>
+        <h3 style="font-family:'Cormorant Garamond',serif;color:#F5F0E8;font-size:1.4rem;font-weight:300;margin-bottom:.75rem;">空間デザイン</h3>
+        <div style="width:30px;height:1px;background:rgba(196,168,130,0.4);margin:0 auto .75rem;"></div>
+        <p style="color:rgba(245,240,232,0.5);font-size:.78rem;line-height:1.9;font-family:'Noto Sans JP',sans-serif;">築60年の一軒家をリノベーション。漆喰壁・無垢材・真鍮の照明が調和した温かみのある空間で、読書や仕事に集中できる「自分だけの場所」。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Menu -->
+  <section id="cafe-menu" style="padding:6rem clamp(1.5rem,6vw,5rem);background:#F5F0E8;">
+    <div style="max-width:900px;margin:0 auto;">
+      <div style="text-align:center;margin-bottom:3.5rem;">
+        <p style="font-family:'Cormorant Garamond',serif;font-style:italic;color:#7A5C3E;font-size:1.1rem;letter-spacing:.2em;">Our Menu</p>
+        <h2 style="font-family:'Cormorant Garamond',serif;color:#2C1A0E;font-size:clamp(2.5rem,5vw,4rem);font-weight:300;margin-top:.5rem;">季節の<em style="font-style:italic;color:#C4A882;">メニュー</em></h2>
+        <div style="width:40px;height:1px;background:#7A5C3E;margin:1.5rem auto;"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.25rem;">
+        <div class="menu-card-cafe" style="padding:2rem;border:1px solid #E8DDD0;backdrop-filter:blur(4px);">
+          <p style="font-family:'Cormorant Garamond',serif;font-style:italic;color:#C4A882;font-size:.82rem;letter-spacing:.15em;">Signature</p>
+          <h3 style="font-family:'Cormorant Garamond',serif;color:#2C1A0E;font-size:1.4rem;font-weight:300;margin-top:.25rem;">ルミエール ブレンド</h3>
+          <p style="color:rgba(44,26,14,0.5);font-size:.75rem;margin-top:.75rem;line-height:1.8;font-family:'Noto Sans JP',sans-serif;">エチオピア・イルガチェフェとコロンビア・ウイラのブレンド。ジャスミンのような香りとオレンジのような酸味が特徴。</p>
+          <p style="font-family:'Cormorant Garamond',serif;color:#7A5C3E;font-size:1.2rem;margin-top:1.25rem;">¥ 750</p>
+        </div>
+        <div class="menu-card-cafe" style="padding:2rem;border:1px solid #E8DDD0;backdrop-filter:blur(4px);">
+          <p style="font-family:'Cormorant Garamond',serif;font-style:italic;color:#C4A882;font-size:.82rem;letter-spacing:.15em;">Pour Over</p>
+          <h3 style="font-family:'Cormorant Garamond',serif;color:#2C1A0E;font-size:1.4rem;font-weight:300;margin-top:.25rem;">シングルオリジン</h3>
+          <p style="color:rgba(44,26,14,0.5);font-size:.75rem;margin-top:.75rem;line-height:1.8;font-family:'Noto Sans JP',sans-serif;">週替わりで産地が変わるスペシャルティコーヒー。ハンドドリップで丁寧に抽出し、豆本来のポテンシャルを最大限に。</p>
+          <p style="font-family:'Cormorant Garamond',serif;color:#7A5C3E;font-size:1.2rem;margin-top:1.25rem;">¥ 850</p>
+        </div>
+        <div class="menu-card-cafe" style="padding:2rem;border:1px solid #E8DDD0;backdrop-filter:blur(4px);">
+          <p style="font-family:'Cormorant Garamond',serif;font-style:italic;color:#C4A882;font-size:.82rem;letter-spacing:.15em;">Seasonal</p>
+          <h3 style="font-family:'Cormorant Garamond',serif;color:#2C1A0E;font-size:1.4rem;font-weight:300;margin-top:.25rem;">ほうじ茶ラテ</h3>
+          <p style="color:rgba(44,26,14,0.5);font-size:.75rem;margin-top:.75rem;line-height:1.8;font-family:'Noto Sans JP',sans-serif;">京都宇治の一番茶を使った香り高いほうじ茶に、和三盆シロップと北海道産牛乳のスチームミルクを合わせた一杯。</p>
+          <p style="font-family:'Cormorant Garamond',serif;color:#7A5C3E;font-size:1.2rem;margin-top:1.25rem;">¥ 780</p>
+        </div>
+        <div class="menu-card-cafe" style="padding:2rem;border:1px solid #E8DDD0;backdrop-filter:blur(4px);">
+          <p style="font-family:'Cormorant Garamond',serif;font-style:italic;color:#C4A882;font-size:.82rem;letter-spacing:.15em;">Morning Plate</p>
+          <h3 style="font-family:'Cormorant Garamond',serif;color:#2C1A0E;font-size:1.4rem;font-weight:300;margin-top:.25rem;">モーニングプレート</h3>
+          <p style="color:rgba(44,26,14,0.5);font-size:.75rem;margin-top:.75rem;line-height:1.8;font-family:'Noto Sans JP',sans-serif;">毎朝焼き上げるカンパーニュ・旬野菜のスープ・ゆで卵・季節のサラダ。一日の始まりにぴったりのプレート。</p>
+          <p style="font-family:'Cormorant Garamond',serif;color:#7A5C3E;font-size:1.2rem;margin-top:1.25rem;">¥ 1,200</p>
+        </div>
+        <div class="menu-card-cafe" style="padding:2rem;border:1px solid #E8DDD0;backdrop-filter:blur(4px);">
+          <p style="font-family:'Cormorant Garamond',serif;font-style:italic;color:#C4A882;font-size:.82rem;letter-spacing:.15em;">Lunch</p>
+          <h3 style="font-family:'Cormorant Garamond',serif;color:#2C1A0E;font-size:1.4rem;font-weight:300;margin-top:.25rem;">本日のキッシュランチ</h3>
+          <p style="color:rgba(44,26,14,0.5);font-size:.75rem;margin-top:.75rem;line-height:1.8;font-family:'Noto Sans JP',sans-serif;">季節野菜と国産チーズのキッシュにグリーンサラダとドリンクが付くランチセット。週ごとに食材が変わります。</p>
+          <p style="font-family:'Cormorant Garamond',serif;color:#7A5C3E;font-size:1.2rem;margin-top:1.25rem;">¥ 1,500</p>
+        </div>
+        <div class="menu-card-cafe" style="padding:2rem;background:#2C1A0E;border:1px solid #2C1A0E;">
+          <p style="font-family:'Cormorant Garamond',serif;font-style:italic;color:#C4A882;font-size:.82rem;letter-spacing:.15em;">Patisserie</p>
+          <h3 style="font-family:'Cormorant Garamond',serif;color:#F5F0E8;font-size:1.4rem;font-weight:300;margin-top:.25rem;">タルト・オ・シトロン</h3>
+          <p style="color:rgba(245,240,232,0.5);font-size:.75rem;margin-top:.75rem;line-height:1.8;font-family:'Noto Sans JP',sans-serif;">瀬戸内産レモンのクリームと自家製サブレ生地のコントラストが楽しいシグネチャータルト。</p>
+          <p style="font-family:'Cormorant Garamond',serif;color:#C4A882;font-size:1.2rem;margin-top:1.25rem;">¥ 680</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Info strip -->
+  <div style="background:#C4A882;padding:3rem clamp(1.5rem,6vw,5rem);">
+    <div style="max-width:800px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;text-align:center;">
+      <div><p style="font-family:'Cormorant Garamond',serif;font-style:italic;color:rgba(44,26,14,0.6);font-size:.82rem;letter-spacing:.2em;">Open Hours</p><p style="font-family:'Cormorant Garamond',serif;color:#2C1A0E;font-size:1.8rem;font-weight:300;margin-top:.5rem;">8:00 — 20:00</p><p style="color:rgba(44,26,14,0.6);font-size:.72rem;margin-top:.25rem;font-family:'Noto Sans JP',sans-serif;">火曜定休</p></div>
+      <div style="border-left:1px solid rgba(44,26,14,0.2);border-right:1px solid rgba(44,26,14,0.2);"><p style="font-family:'Cormorant Garamond',serif;font-style:italic;color:rgba(44,26,14,0.6);font-size:.82rem;letter-spacing:.2em;">Location</p><p style="font-family:'Cormorant Garamond',serif;color:#2C1A0E;font-size:1.8rem;font-weight:300;margin-top:.5rem;">代官山</p><p style="color:rgba(44,26,14,0.6);font-size:.72rem;margin-top:.25rem;font-family:'Noto Sans JP',sans-serif;">渋谷区代官山町 12-8</p></div>
+      <div><p style="font-family:'Cormorant Garamond',serif;font-style:italic;color:rgba(44,26,14,0.6);font-size:.82rem;letter-spacing:.2em;">Seats</p><p style="font-family:'Cormorant Garamond',serif;color:#2C1A0E;font-size:1.8rem;font-weight:300;margin-top:.5rem;">28席</p><p style="color:rgba(44,26,14,0.6);font-size:.72rem;margin-top:.25rem;font-family:'Noto Sans JP',sans-serif;">テラス席あり / 完全禁煙</p></div>
+    </div>
+  </div>
+
+  <!-- Contact -->
+  <section id="cafe-contact" style="padding:6rem clamp(1.5rem,6vw,5rem);background:#2C1A0E;">
+    <div style="max-width:600px;margin:0 auto;">
+      <div style="text-align:center;margin-bottom:3rem;">
+        <p style="font-family:'Cormorant Garamond',serif;font-style:italic;color:#C4A882;font-size:1.1rem;letter-spacing:.2em;">Reservation</p>
+        <h2 style="font-family:'Cormorant Garamond',serif;color:#F5F0E8;font-size:clamp(2rem,4vw,3rem);font-weight:300;margin-top:.5rem;">ご予約・<em style="font-style:italic;color:#C4A882;">お問い合わせ</em></h2>
+        <div class="cafe-divider"></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:1rem;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+          <input type="text" placeholder="お名前" class="cafe-input" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#F5F0E8;font-family:'Noto Sans JP',sans-serif;font-size:.82rem;padding:.9rem 1rem;"/>
+          <input type="tel" placeholder="電話番号" class="cafe-input" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#F5F0E8;font-family:'Noto Sans JP',sans-serif;font-size:.82rem;padding:.9rem 1rem;"/>
+        </div>
+        <input type="email" placeholder="メールアドレス" class="cafe-input" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#F5F0E8;font-family:'Noto Sans JP',sans-serif;font-size:.82rem;padding:.9rem 1rem;"/>
+        <textarea rows="4" placeholder="ご来店希望日時・人数などをご記入ください" class="cafe-input" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#F5F0E8;font-family:'Noto Sans JP',sans-serif;font-size:.82rem;padding:.9rem 1rem;resize:none;"></textarea>
+        <button style="width:100%;background:#C4A882;color:#2C1A0E;font-family:'Noto Sans JP',sans-serif;font-size:.78rem;letter-spacing:.25em;padding:1rem;border:none;cursor:pointer;transition:background .25s;" onmouseover="this.style.background='#7A5C3E';this.style.color='#F5F0E8';" onmouseout="this.style.background='#C4A882';this.style.color='#2C1A0E';">送信する</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Café Footer -->
+  <footer style="background:#2C1A0E;border-top:1px solid rgba(196,168,130,0.1);padding:2rem;text-align:center;">
+    <p style="font-family:'Cormorant Garamond',serif;font-size:1rem;color:rgba(245,240,232,0.3);letter-spacing:.15em;">© 2024 Café Lumière. All rights reserved.</p>
+  </footer>
+</div>
+
+<!-- ══════════════════════════════════════
+     PAGE 3 — EC SITE (SŌZAI)
+══════════════════════════════════════ -->
+<div id="page-ec" class="page">
+
+  <!-- EC Sub Nav -->
+  <div style="background:#F2EDE4;border-bottom:1px solid rgba(28,28,28,0.08);padding:.75rem clamp(1rem,4vw,3rem);display:flex;align-items:center;justify-content:space-between;position:sticky;top:56px;z-index:50;">
+    <span style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:400;color:#1C1C1C;letter-spacing:.15em;">SŌZAI</span>
+    <div style="display:flex;gap:2rem;">
+      <span class="ec-nav-link" onclick="document.getElementById('ec-products').scrollIntoView({behavior:'smooth'})">コレクション</span>
+      <span class="ec-nav-link" onclick="document.getElementById('ec-concept').scrollIntoView({behavior:'smooth'})">コンセプト</span>
+      <span class="ec-nav-link" onclick="document.getElementById('ec-contact').scrollIntoView({behavior:'smooth'})">お問い合わせ</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:1rem;">
+      <div style="position:relative;cursor:pointer;">
+        <svg width="20" height="20" fill="none" stroke="#1C1C1C" stroke-width="1.5" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        <span class="cart-count">2</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hero split -->
+  <section class="ec-hero" style="min-height:88vh;">
+    <div class="ec-hero-left">
+      <span class="ec-tag" style="margin-bottom:2rem;">2025 AUTUMN / WINTER</span>
+      <h1 style="font-family:'Cormorant Garamond',serif;font-size:clamp(3rem,7vw,6rem);font-weight:300;color:#F2EDE4;line-height:.95;letter-spacing:-.01em;">Less is<br><em style="font-style:italic;">More.</em></h1>
+      <p style="color:rgba(242,237,228,0.55);font-size:.82rem;line-height:2;margin-top:1.5rem;max-width:380px;font-family:'Noto Sans JP',sans-serif;">自然と人を繋ぐ素材、未来に残る一着を。<br>SŌZAI は、有機農法で育てた日本の素材と職人の技で、<br>サステナブルなファッションを提案します。</p>
+      <div style="display:flex;gap:1rem;margin-top:2.5rem;flex-wrap:wrap;">
+        <button onclick="document.getElementById('ec-products').scrollIntoView({behavior:'smooth'})" style="background:#F2EDE4;color:#1C1C1C;border:none;font-family:'Noto Sans JP',sans-serif;font-size:.72rem;letter-spacing:.2em;padding:.9rem 2.5rem;cursor:pointer;transition:opacity .2s;" onmouseover="this.style.opacity='.8'" onmouseout="this.style.opacity='1'">コレクションを見る</button>
+        <button style="background:none;border:1px solid rgba(242,237,228,0.35);color:rgba(242,237,228,0.7);font-family:'Noto Sans JP',sans-serif;font-size:.72rem;letter-spacing:.2em;padding:.9rem 2.5rem;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='rgba(242,237,228,0.7)';this.style.color='#F2EDE4'" onmouseout="this.style.borderColor='rgba(242,237,228,0.35)';this.style.color='rgba(242,237,228,0.7)'">コンセプトを読む</button>
+      </div>
+      <div style="display:flex;gap:2rem;margin-top:3rem;padding-top:2rem;border-top:1px solid rgba(242,237,228,0.1);">
+        <div><div style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:#F2EDE4;">100%</div><div style="font-size:.62rem;letter-spacing:.15em;color:rgba(242,237,228,0.4);margin-top:.2rem;">ORGANIC</div></div>
+        <div><div style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:#F2EDE4;">国内</div><div style="font-size:.62rem;letter-spacing:.15em;color:rgba(242,237,228,0.4);margin-top:.2rem;">MADE IN JAPAN</div></div>
+        <div><div style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:#F2EDE4;">0</div><div style="font-size:.62rem;letter-spacing:.15em;color:rgba(242,237,228,0.4);margin-top:.2rem;">WASTE POLICY</div></div>
+      </div>
+    </div>
+    <div class="ec-hero-right"></div>
+  </section>
+
+  <!-- Concept -->
+  <section id="ec-concept" style="padding:6rem clamp(1.5rem,6vw,5rem);background:#F2EDE4;">
+    <div style="max-width:880px;margin:0 auto;display:grid;md:grid-cols-2;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;">
+      <div>
+        <span class="ec-tag-outline" style="margin-bottom:1.5rem;display:inline-block;">CONCEPT</span>
+        <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,4vw,3.2rem);font-weight:300;color:#1C1C1C;line-height:1.2;margin-bottom:1.5rem;">地球に優しく、<br>自分にも正直に。</h2>
+        <p style="color:rgba(28,28,28,0.55);font-size:.82rem;line-height:2.1;font-family:'Noto Sans JP',sans-serif;">「素材（SŌZAI）」という名の通り、<br>私たちは原料にこだわります。</p>
+        <p style="color:rgba(28,28,28,0.55);font-size:.82rem;line-height:2.1;margin-top:1rem;font-family:'Noto Sans JP',sans-serif;">岡山・倉敷の有機綿農家、京都の西陣織職人、青森の藍染め工房。日本各地の素材と技術を未来へ繋ぐため、<br>全製品でトレーサビリティを公開しています。</p>
+        <p style="color:rgba(28,28,28,0.55);font-size:.82rem;line-height:2.1;margin-top:1rem;font-family:'Noto Sans JP',sans-serif;">捨てるのではなく、直す。流行ではなく、本質を選ぶ。<br>SOZAIはそのための選択肢を提供します。</p>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;">
+        <img src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=400&q=80" style="width:100%;aspect-ratio:3/4;object-fit:cover;" alt="">
+        <img src="https://images.unsplash.com/photo-1445205170230-053b83016050?w=400&q=80" style="width:100%;aspect-ratio:3/4;object-fit:cover;margin-top:2rem;" alt="">
+      </div>
+    </div>
+  </section>
+
+  <!-- Products -->
+  <section id="ec-products" style="padding:5rem clamp(1.5rem,6vw,5rem);background:#F7F4EF;">
+    <div style="max-width:1100px;margin:0 auto;">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:2rem;flex-wrap:gap;gap:1rem;">
+        <div>
+          <span class="ec-tag-outline" style="display:inline-block;margin-bottom:.75rem;">COLLECTION</span>
+          <h2 style="font-family:'Cormorant Garamond',serif;font-size:2.5rem;font-weight:300;color:#1C1C1C;">2025 A/W</h2>
+        </div>
+        <div style="display:flex;gap:.5rem;flex-wrap:wrap;">
+          <button class="category-pill active" onclick="filterEC(this,'all')">ALL</button>
+          <button class="category-pill" onclick="filterEC(this,'tops')">TOPS</button>
+          <button class="category-pill" onclick="filterEC(this,'bottoms')">BOTTOMS</button>
+          <button class="category-pill" onclick="filterEC(this,'outer')">OUTER</button>
+        </div>
+      </div>
+      <div id="ec-product-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1.5rem;">
+        <div class="product-card" data-cat="tops">
+          <div style="position:relative;overflow:hidden;">
+            <span class="badge-new">NEW</span>
+            <img src="https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=500&q=75" class="product-card-img" alt="">
+          </div>
+          <div style="padding:1.25rem;">
+            <p style="font-size:.62rem;letter-spacing:.2em;color:rgba(28,28,28,0.4);margin-bottom:.35rem;">ORGANIC COTTON</p>
+            <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:400;color:#1C1C1C;">ガーゼ天竺 ロングシャツ</h3>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:.75rem;">
+              <span style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:#1C1C1C;">¥ 18,700</span>
+              <div style="display:flex;gap:.25rem;">
+                <span style="width:12px;height:12px;border-radius:50%;background:#E8DDD0;border:1px solid rgba(28,28,28,0.2);cursor:pointer;"></span>
+                <span style="width:12px;height:12px;border-radius:50%;background:#2C2C2C;cursor:pointer;"></span>
+                <span style="width:12px;height:12px;border-radius:50%;background:#8A9E85;cursor:pointer;"></span>
+              </div>
+            </div>
+          </div>
+          <button class="add-btn">カートに追加</button>
+        </div>
+        <div class="product-card" data-cat="bottoms">
+          <div style="position:relative;overflow:hidden;">
+            <img src="https://images.unsplash.com/photo-1594938298603-c8148c4b4a5d?w=500&q=75" class="product-card-img" alt="">
+          </div>
+          <div style="padding:1.25rem;">
+            <p style="font-size:.62rem;letter-spacing:.2em;color:rgba(28,28,28,0.4);margin-bottom:.35rem;">LINEN / COTTON</p>
+            <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:400;color:#1C1C1C;">リネン ワイドトラウザー</h3>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:.75rem;">
+              <span style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:#1C1C1C;">¥ 22,000</span>
+              <div style="display:flex;gap:.25rem;">
+                <span style="width:12px;height:12px;border-radius:50%;background:#D4C5A9;border:1px solid rgba(28,28,28,0.2);cursor:pointer;"></span>
+                <span style="width:12px;height:12px;border-radius:50%;background:#1a1a2e;cursor:pointer;"></span>
+              </div>
+            </div>
+          </div>
+          <button class="add-btn">カートに追加</button>
+        </div>
+        <div class="product-card" data-cat="outer">
+          <div style="position:relative;overflow:hidden;">
+            <span class="badge-new">NEW</span>
+            <img src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=500&q=75" class="product-card-img" alt="">
+          </div>
+          <div style="padding:1.25rem;">
+            <p style="font-size:.62rem;letter-spacing:.2em;color:rgba(28,28,28,0.4);margin-bottom:.35rem;">WOOL / ALPACA</p>
+            <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:400;color:#1C1C1C;">アルパカウール コート</h3>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:.75rem;">
+              <span style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:#1C1C1C;">¥ 68,200</span>
+              <div style="display:flex;gap:.25rem;">
+                <span style="width:12px;height:12px;border-radius:50%;background:#C4B49A;border:1px solid rgba(28,28,28,0.2);cursor:pointer;"></span>
+                <span style="width:12px;height:12px;border-radius:50%;background:#1C1C1C;cursor:pointer;"></span>
+              </div>
+            </div>
+          </div>
+          <button class="add-btn">カートに追加</button>
+        </div>
+        <div class="product-card" data-cat="tops">
+          <div style="position:relative;overflow:hidden;">
+            <span class="badge-sale">−20%</span>
+            <img src="https://images.unsplash.com/photo-1484327973588-c31f829103fe?w=500&q=75" class="product-card-img" alt="">
+          </div>
+          <div style="padding:1.25rem;">
+            <p style="font-size:.62rem;letter-spacing:.2em;color:rgba(28,28,28,0.4);margin-bottom:.35rem;">ORGANIC COTTON</p>
+            <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:400;color:#1C1C1C;">藍染め タートルネック</h3>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:.75rem;">
+              <div>
+                <span style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:#D4574A;">¥ 14,960</span>
+                <span style="font-family:'Cormorant Garamond',serif;font-size:.85rem;color:rgba(28,28,28,0.35);text-decoration:line-through;margin-left:.5rem;">¥ 18,700</span>
+              </div>
+            </div>
+          </div>
+          <button class="add-btn">カートに追加</button>
+        </div>
+        <div class="product-card" data-cat="bottoms">
+          <div style="position:relative;overflow:hidden;">
+            <img src="https://images.unsplash.com/photo-1506629082955-511b1aa562c8?w=500&q=75" class="product-card-img" alt="">
+          </div>
+          <div style="padding:1.25rem;">
+            <p style="font-size:.62rem;letter-spacing:.2em;color:rgba(28,28,28,0.4);margin-bottom:.35rem;">RECYCLED WOOL</p>
+            <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:400;color:#1C1C1C;">ウール タイトスカート</h3>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:.75rem;">
+              <span style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:#1C1C1C;">¥ 25,300</span>
+              <div style="display:flex;gap:.25rem;">
+                <span style="width:12px;height:12px;border-radius:50%;background:#8B7355;cursor:pointer;"></span>
+                <span style="width:12px;height:12px;border-radius:50%;background:#2C2C2C;cursor:pointer;"></span>
+              </div>
+            </div>
+          </div>
+          <button class="add-btn">カートに追加</button>
+        </div>
+        <div class="product-card" data-cat="outer">
+          <div style="position:relative;overflow:hidden;">
+            <img src="https://images.unsplash.com/photo-1521223890158-f9f7c3d5d504?w=500&q=75" class="product-card-img" alt="">
+          </div>
+          <div style="padding:1.25rem;">
+            <p style="font-size:.62rem;letter-spacing:.2em;color:rgba(28,28,28,0.4);margin-bottom:.35rem;">ORGANIC HEMP</p>
+            <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:400;color:#1C1C1C;">ヘンプ リネン ジャケット</h3>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:.75rem;">
+              <span style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:#1C1C1C;">¥ 38,500</span>
+              <div style="display:flex;gap:.25rem;">
+                <span style="width:12px;height:12px;border-radius:50%;background:#C9B99A;border:1px solid rgba(28,28,28,0.2);cursor:pointer;"></span>
+                <span style="width:12px;height:12px;border-radius:50%;background:#556B2F;cursor:pointer;"></span>
+              </div>
+            </div>
+          </div>
+          <button class="add-btn">カートに追加</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact EC -->
+  <section id="ec-contact" style="padding:5rem clamp(1.5rem,6vw,5rem);background:#1C1C1C;color:#F2EDE4;">
+    <div style="max-width:600px;margin:0 auto;text-align:center;">
+      <span class="ec-tag" style="background:rgba(242,237,228,0.1);color:rgba(242,237,228,0.5);border:1px solid rgba(242,237,228,0.1);margin-bottom:1.5rem;display:inline-block;">CONTACT</span>
+      <h2 style="font-family:'Cormorant Garamond',serif;font-size:2.5rem;font-weight:300;color:#F2EDE4;margin-bottom:.75rem;">お問い合わせ</h2>
+      <p style="color:rgba(242,237,228,0.4);font-size:.78rem;line-height:1.9;margin-bottom:2.5rem;font-family:'Noto Sans JP',sans-serif;">商品・サイズ・素材についてのご質問、卸・コラボのご相談はこちらから。</p>
+      <div style="display:flex;flex-direction:column;gap:.85rem;text-align:left;">
+        <input type="text" placeholder="お名前" style="width:100%;background:rgba(242,237,228,0.05);border:1px solid rgba(242,237,228,0.1);color:#F2EDE4;font-family:'Noto Sans JP',sans-serif;font-size:.8rem;padding:.85rem 1rem;" onfocus="this.style.borderColor='rgba(242,237,228,0.3)'" onblur="this.style.borderColor='rgba(242,237,228,0.1)'"/>
+        <input type="email" placeholder="メールアドレス" style="width:100%;background:rgba(242,237,228,0.05);border:1px solid rgba(242,237,228,0.1);color:#F2EDE4;font-family:'Noto Sans JP',sans-serif;font-size:.8rem;padding:.85rem 1rem;" onfocus="this.style.borderColor='rgba(242,237,228,0.3)'" onblur="this.style.borderColor='rgba(242,237,228,0.1)'"/>
+        <textarea rows="4" placeholder="お問い合わせ内容" style="width:100%;background:rgba(242,237,228,0.05);border:1px solid rgba(242,237,228,0.1);color:#F2EDE4;font-family:'Noto Sans JP',sans-serif;font-size:.8rem;padding:.85rem 1rem;resize:none;" onfocus="this.style.borderColor='rgba(242,237,228,0.3)'" onblur="this.style.borderColor='rgba(242,237,228,0.1)'"></textarea>
+        <button style="background:#F2EDE4;color:#1C1C1C;border:none;font-family:'Noto Sans JP',sans-serif;font-size:.72rem;letter-spacing:.2em;padding:.9rem;cursor:pointer;transition:opacity .2s;" onmouseover="this.style.opacity='.8'" onmouseout="this.style.opacity='1'">送信する</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- EC Footer -->
+  <footer style="background:#0E0E0E;padding:2rem;text-align:center;">
+    <p style="font-family:'Cormorant Garamond',serif;font-size:.9rem;color:rgba(242,237,228,0.2);letter-spacing:.2em;">© 2025 SŌZAI. Sustainable Fashion from Japan.</p>
+  </footer>
+</div>
+
+<!-- ══════════════════════════════════════
+     PAGE 4 — HOTEL LP (SHIZEN RESORT)
+══════════════════════════════════════ -->
+<div id="page-hotel" class="page">
+
+  <!-- Hotel Nav -->
+  <div style="position:absolute;top:56px;left:0;right:0;z-index:100;padding:1.25rem 2rem;display:flex;align-items:center;justify-content:space-between;">
+    <span style="font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:300;color:#F7F3EE;letter-spacing:.4em;">SHIZEN RESORT</span>
+    <ul style="display:flex;gap:2rem;list-style:none;color:rgba(247,243,238,0.65);font-size:.68rem;letter-spacing:.2em;">
+      <li><a href="#hotel-rooms" style="color:inherit;text-decoration:none;transition:color .2s;" onmouseover="this.style.color='#C9A84C'" onmouseout="this.style.color='rgba(247,243,238,0.65)'">お部屋</a></li>
+      <li><a href="#hotel-amenity" style="color:inherit;text-decoration:none;transition:color .2s;" onmouseover="this.style.color='#C9A84C'" onmouseout="this.style.color='rgba(247,243,238,0.65)'">施設</a></li>
+      <li><a href="#hotel-book" style="color:inherit;text-decoration:none;transition:color .2s;" onmouseover="this.style.color='#C9A84C'" onmouseout="this.style.color='rgba(247,243,238,0.65)'">ご予約</a></li>
+    </ul>
+  </div>
+
+  <!-- Hero -->
+  <section class="hotel-hero">
+    <div class="hotel-hero" style="position:relative;z-index:10;min-height:0;padding:0;">
+      <p style="font-family:'Cormorant Garamond',serif;font-style:italic;color:#C9A84C;font-size:1rem;letter-spacing:.3em;margin-bottom:1rem;">Niseko, Hokkaido</p>
+      <h1 style="font-family:'Cormorant Garamond',serif;font-size:clamp(3.5rem,10vw,8rem);font-weight:300;color:#F7F3EE;line-height:.92;letter-spacing:-.01em;">SHIZEN<br><em style="font-style:italic;color:rgba(247,243,238,0.6);">Resort</em></h1>
+      <p style="color:rgba(247,243,238,0.55);font-size:.82rem;letter-spacing:.18em;margin-top:1.5rem;font-family:'Noto Sans JP',sans-serif;max-width:400px;line-height:2;">自然と一体になる、静謐なリゾート体験。<br>北海道・ニセコの大自然に抱かれた<br>全室露天風呂付き離れ。</p>
+      <div style="display:flex;gap:1rem;margin-top:2rem;flex-wrap:wrap;">
+        <button onclick="document.getElementById('hotel-book').scrollIntoView({behavior:'smooth'})" class="book-btn-solid">ご予約・空室確認</button>
+        <button onclick="document.getElementById('hotel-rooms').scrollIntoView({behavior:'smooth'})" class="book-btn">お部屋を見る</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Awards strip -->
+  <div style="background:#13120F;padding:1.5rem 2rem;display:flex;gap:3rem;justify-content:center;overflow-x:auto;flex-wrap:wrap;">
+    <div style="text-align:center;"><div style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:#C9A84C;">Forbes</div><div style="font-size:.58rem;letter-spacing:.2em;color:rgba(247,243,238,0.3);margin-top:.15rem;">TRAVEL GUIDE 2025</div></div>
+    <div style="width:1px;background:rgba(247,243,238,0.08);"></div>
+    <div style="text-align:center;"><div style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:#C9A84C;">Condé Nast</div><div style="font-size:.58rem;letter-spacing:.2em;color:rgba(247,243,238,0.3);margin-top:.15rem;">HOT LIST 2025</div></div>
+    <div style="width:1px;background:rgba(247,243,238,0.08);"></div>
+    <div style="text-align:center;"><div style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:#C9A84C;">★ 4.9</div><div style="font-size:.58rem;letter-spacing:.2em;color:rgba(247,243,238,0.3);margin-top:.15rem;">TRIPADVISOR</div></div>
+    <div style="width:1px;background:rgba(247,243,238,0.08);"></div>
+    <div style="text-align:center;"><div style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:#C9A84C;">全室</div><div style="font-size:.58rem;letter-spacing:.2em;color:rgba(247,243,238,0.3);margin-top:.15rem;">PRIVATE ONSEN</div></div>
+  </div>
+
+  <!-- Concept -->
+  <section style="padding:6rem clamp(1.5rem,6vw,5rem);background:#0D0C0A;">
+    <div style="max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;">
+      <div>
+        <span class="hotel-label" style="display:block;margin-bottom:1.25rem;">PHILOSOPHY</span>
+        <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,4vw,3rem);font-weight:300;color:#F7F3EE;line-height:1.2;margin-bottom:1.5rem;">自然の中に、<br><em style="font-style:italic;color:#C9A84C;">真の贅沢</em>がある。</h2>
+        <p style="color:rgba(247,243,238,0.45);font-size:.82rem;line-height:2.1;font-family:'Noto Sans JP',sans-serif;">SHIZEN RESOTは、「静けさ」と「自然」こそが最上の贅沢だ<br>という信念のもとに生まれました。<br>羊蹄山を望む絶景、手付かずの白樺林、澄んだ空気。</p>
+        <p style="color:rgba(247,243,238,0.45);font-size:.82rem;line-height:2.1;margin-top:1rem;font-family:'Noto Sans JP',sans-serif;">全8棟の離れには、それぞれ専用の露天温泉風呂を完備。<br>自家農園から届く食材を使った料理長のコース料理で、<br>五感すべてが満たされるひとときを。</p>
+      </div>
+      <div style="position:relative;">
+        <img src="https://images.unsplash.com/photo-1445019980597-93fa8acb246c?w=600&q=80" style="width:100%;aspect-ratio:3/4;object-fit:cover;" alt="">
+        <div style="position:absolute;bottom:-1.5rem;left:-1.5rem;background:#13120F;border:1px solid rgba(201,168,76,0.15);padding:1.25rem 1.5rem;">
+          <p style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:#C9A84C;">全8棟</p>
+          <p style="font-size:.6rem;letter-spacing:.2em;color:rgba(247,243,238,0.35);margin-top:.2rem;">PRIVATE VILLA</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Rooms -->
+  <section id="hotel-rooms" style="padding:6rem clamp(1.5rem,6vw,5rem);background:#0D0C0A;">
+    <div style="max-width:1000px;margin:0 auto;">
+      <div style="text-align:center;margin-bottom:3.5rem;">
+        <span class="hotel-label" style="display:block;margin-bottom:.75rem;">ACCOMMODATION</span>
+        <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,4vw,3rem);font-weight:300;color:#F7F3EE;">お部屋・<em style="font-style:italic;color:#C9A84C;">お選びください</em></h2>
+        <div class="hotel-divider" style="margin:1.5rem auto;"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.25rem;">
+        <div class="room-card">
+          <div style="position:relative;overflow:hidden;">
+            <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600&q=75" class="room-img" alt="">
+            <div style="position:absolute;top:.75rem;left:.75rem;background:rgba(201,168,76,0.15);border:1px solid rgba(201,168,76,0.3);color:#C9A84C;font-size:.58rem;letter-spacing:.18em;padding:.25rem .7rem;">STANDARD</div>
+          </div>
+          <div style="padding:1.5rem;">
+            <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:300;color:#F7F3EE;margin-bottom:.5rem;">白樺の離れ</h3>
+            <p style="color:rgba(247,243,238,0.4);font-size:.75rem;line-height:1.8;font-family:'Noto Sans JP',sans-serif;margin-bottom:1.25rem;">白樺林に囲まれた一棟貸しの離れ。専用露天温泉風呂と羊蹄山ビューを完備。2名様専用。</p>
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <div><span style="font-size:.65rem;color:rgba(247,243,238,0.35);letter-spacing:.1em;">1泊 / 2名</span><br><span style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:#C9A84C;">¥ 88,000〜</span></div>
+              <button class="book-btn" onclick="document.getElementById('hotel-book').scrollIntoView({behavior:'smooth'})">予約する</button>
+            </div>
+          </div>
+        </div>
+        <div class="room-card">
+          <div style="position:relative;overflow:hidden;">
+            <img src="https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=600&q=75" class="room-img" alt="">
+            <div style="position:absolute;top:.75rem;left:.75rem;background:rgba(201,168,76,0.15);border:1px solid rgba(201,168,76,0.3);color:#C9A84C;font-size:.58rem;letter-spacing:.18em;padding:.25rem .7rem;">PREMIUM</div>
+          </div>
+          <div style="padding:1.5rem;">
+            <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:300;color:#F7F3EE;margin-bottom:.5rem;">雪景色スイート</h3>
+            <p style="color:rgba(247,243,238,0.4);font-size:.75rem;line-height:1.8;font-family:'Noto Sans JP',sans-serif;margin-bottom:1.25rem;">全面ガラス張りの絶景リビングと、ヒノキ造り内風呂・露天風呂のダブル温泉付き高級スイート。</p>
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <div><span style="font-size:.65rem;color:rgba(247,243,238,0.35);letter-spacing:.1em;">1泊 / 2名</span><br><span style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:#C9A84C;">¥ 148,000〜</span></div>
+              <button class="book-btn" onclick="document.getElementById('hotel-book').scrollIntoView({behavior:'smooth'})">予約する</button>
+            </div>
+          </div>
+        </div>
+        <div class="room-card">
+          <div style="position:relative;overflow:hidden;">
+            <img src="https://images.unsplash.com/photo-1540541338537-a082d665b998?w=600&q=75" class="room-img" alt="">
+            <div style="position:absolute;top:.75rem;left:.75rem;background:rgba(201,168,76,0.15);border:1px solid rgba(201,168,76,0.3);color:#C9A84C;font-size:.58rem;letter-spacing:.18em;padding:.25rem .7rem;">FAMILY</div>
+          </div>
+          <div style="padding:1.5rem;">
+            <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:300;color:#F7F3EE;margin-bottom:.5rem;">森の大離れ</h3>
+            <p style="color:rgba(247,243,238,0.4);font-size:.75rem;line-height:1.8;font-family:'Noto Sans JP',sans-serif;margin-bottom:1.25rem;">2LDK構造で最大4名様対応。子ども連れファミリーにも安心な広々リビングと専用庭付き。</p>
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <div><span style="font-size:.65rem;color:rgba(247,243,238,0.35);letter-spacing:.1em;">1泊 / 4名まで</span><br><span style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:#C9A84C;">¥ 168,000〜</span></div>
+              <button class="book-btn" onclick="document.getElementById('hotel-book').scrollIntoView({behavior:'smooth'})">予約する</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Amenities -->
+  <section id="hotel-amenity" style="padding:6rem clamp(1.5rem,6vw,5rem);background:#13120F;">
+    <div style="max-width:800px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start;">
+      <div>
+        <span class="hotel-label" style="display:block;margin-bottom:1rem;">FACILITIES</span>
+        <h2 style="font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;color:#F7F3EE;margin-bottom:2rem;">充実した<em style="font-style:italic;color:#C9A84C;">滞在設備</em></h2>
+        <div>
+          <div class="amenity-item"><div class="amenity-icon"><svg width="16" height="16" fill="none" stroke="#C9A84C" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div><p style="color:#F7F3EE;font-size:.82rem;font-family:'Noto Sans JP',sans-serif;">源泉掛け流し 専用露天温泉</p><p style="color:rgba(247,243,238,0.35);font-size:.68rem;margin-top:.2rem;letter-spacing:.1em;">全棟完備</p></div></div>
+          <div class="amenity-item"><div class="amenity-icon"><svg width="16" height="16" fill="none" stroke="#C9A84C" stroke-width="1.5" viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 010 8h-1M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8zM6 1v3M10 1v3M14 1v3"/></svg></div><div><p style="color:#F7F3EE;font-size:.82rem;font-family:'Noto Sans JP',sans-serif;">自家農園食材のコース料理</p><p style="color:rgba(247,243,238,0.35);font-size:.68rem;margin-top:.2rem;letter-spacing:.1em;">夕食・朝食付きプランあり</p></div></div>
+          <div class="amenity-item"><div class="amenity-icon"><svg width="16" height="16" fill="none" stroke="#C9A84C" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div><div><p style="color:#F7F3EE;font-size:.82rem;font-family:'Noto Sans JP',sans-serif;">24時間 コンシェルジュサービス</p><p style="color:rgba(247,243,238,0.35);font-size:.68rem;margin-top:.2rem;letter-spacing:.1em;">アクティビティ手配も対応</p></div></div>
+          <div class="amenity-item"><div class="amenity-icon"><svg width="16" height="16" fill="none" stroke="#C9A84C" stroke-width="1.5" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg></div><div><p style="color:#F7F3EE;font-size:.82rem;font-family:'Noto Sans JP',sans-serif;">スパ＆トリートメントルーム</p><p style="color:rgba(247,243,238,0.35);font-size:.68rem;margin-top:.2rem;letter-spacing:.1em;">要予約 / 別途料金</p></div></div>
+        </div>
+      </div>
+      <div>
+        <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80" style="width:100%;aspect-ratio:4/5;object-fit:cover;" alt="">
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section style="padding:5rem clamp(1.5rem,6vw,5rem);background:#0D0C0A;">
+    <div style="max-width:900px;margin:0 auto;text-align:center;margin-bottom:3rem;">
+      <span class="hotel-label" style="display:block;margin-bottom:.75rem;">GUEST VOICES</span>
+      <h2 style="font-family:'Cormorant Garamond',serif;font-size:2.5rem;font-weight:300;color:#F7F3EE;">お客様の声</h2>
+    </div>
+    <div style="max-width:900px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.5rem;">
+      <div style="background:#13120F;border:1px solid rgba(201,168,76,0.1);padding:1.75rem;">
+        <div style="color:#C9A84C;font-size:.82rem;margin-bottom:1rem;">★★★★★</div>
+        <p style="color:rgba(247,243,238,0.55);font-size:.78rem;line-height:1.9;font-family:'Noto Sans JP',sans-serif;">夜明けの露天風呂から見た羊蹄山は、言葉を失うほどの美しさ。コース料理も素材の旨みが際立ち、また必ず訪れたいと思います。</p>
+        <p style="color:rgba(247,243,238,0.3);font-size:.68rem;margin-top:1.25rem;letter-spacing:.1em;">— K. Fujimoto, 東京</p>
+      </div>
+      <div style="background:#13120F;border:1px solid rgba(201,168,76,0.1);padding:1.75rem;">
+        <div style="color:#C9A84C;font-size:.82rem;margin-bottom:1rem;">★★★★★</div>
+        <p style="color:rgba(247,243,238,0.55);font-size:.78rem;line-height:1.9;font-family:'Noto Sans JP',sans-serif;">記念日に利用しました。チェックイン時から完全にプライベートで、スタッフの方の気遣いが絶妙。日常を完全に忘れられる唯一の場所です。</p>
+        <p style="color:rgba(247,243,238,0.3);font-size:.68rem;margin-top:1.25rem;letter-spacing:.1em;">— M. Nakamura, 大阪</p>
+      </div>
+      <div style="background:#13120F;border:1px solid rgba(201,168,76,0.1);padding:1.75rem;">
+        <div style="color:#C9A84C;font-size:.82rem;margin-bottom:1rem;">★★★★★</div>
+        <p style="color:rgba(247,243,238,0.55);font-size:.78rem;line-height:1.9;font-family:'Noto Sans JP',sans-serif;">子どもたちが森の大離れで大喜び。自然の中で過ごす時間がこれほど贅沢だとは思いませんでした。家族全員の宝になった旅です。</p>
+        <p style="color:rgba(247,243,238,0.3);font-size:.68rem;margin-top:1.25rem;letter-spacing:.1em;">— T. Yamada, 名古屋</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Booking -->
+  <section id="hotel-book" style="padding:6rem clamp(1.5rem,6vw,5rem);background:url('https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=1400&q=70') center/cover no-repeat;position:relative;">
+    <div style="position:absolute;inset:0;background:rgba(13,12,10,0.82);"></div>
+    <div style="max-width:700px;margin:0 auto;position:relative;z-index:10;">
+      <div style="text-align:center;margin-bottom:3rem;">
+        <span class="hotel-label" style="display:block;margin-bottom:.75rem;">RESERVATION</span>
+        <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,4vw,3rem);font-weight:300;color:#F7F3EE;">ご予約・<em style="font-style:italic;color:#C9A84C;">空室確認</em></h2>
+        <div class="hotel-divider" style="margin:1.5rem auto;"></div>
+        <p style="color:rgba(247,243,238,0.45);font-size:.78rem;letter-spacing:.08em;font-family:'Noto Sans JP',sans-serif;">直予約限定特典：チェックアウトを13時まで延長 / ウェルカムドリンク付き</p>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;">
+        <div>
+          <label style="display:block;font-size:.6rem;letter-spacing:.25em;color:rgba(247,243,238,0.4);margin-bottom:.5rem;">チェックイン</label>
+          <input type="date" class="hotel-input"/>
+        </div>
+        <div>
+          <label style="display:block;font-size:.6rem;letter-spacing:.25em;color:rgba(247,243,238,0.4);margin-bottom:.5rem;">チェックアウト</label>
+          <input type="date" class="hotel-input"/>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;">
+        <div>
+          <label style="display:block;font-size:.6rem;letter-spacing:.25em;color:rgba(247,243,238,0.4);margin-bottom:.5rem;">ご宿泊人数</label>
+          <select class="hotel-input">
+            <option>2名</option>
+            <option>1名</option>
+            <option>3名</option>
+            <option>4名</option>
+          </select>
+        </div>
+        <div>
+          <label style="display:block;font-size:.6rem;letter-spacing:.25em;color:rgba(247,243,238,0.4);margin-bottom:.5rem;">お部屋タイプ</label>
+          <select class="hotel-input">
+            <option>白樺の離れ</option>
+            <option>雪景色スイート</option>
+            <option>森の大離れ</option>
+          </select>
+        </div>
+      </div>
+      <div style="margin-bottom:1.5rem;">
+        <label style="display:block;font-size:.6rem;letter-spacing:.25em;color:rgba(247,243,238,0.4);margin-bottom:.5rem;">特別なご要望 （アニバーサリー・アレルギー等）</label>
+        <textarea rows="3" class="hotel-input" placeholder="例：誕生日サプライズのご準備をお願いしたいです" style="resize:none;"></textarea>
+      </div>
+      <button class="book-btn-solid" style="width:100%;font-size:.8rem;padding:1.1rem;letter-spacing:.25em;">空室を確認して予約する</button>
+      <p style="text-align:center;color:rgba(247,243,238,0.25);font-size:.65rem;margin-top:1rem;font-family:'Noto Sans JP',sans-serif;">予約完了後、確認メールをお送りします。キャンセルは3日前まで無料です。</p>
+    </div>
+  </section>
+
+  <!-- Hotel Footer -->
+  <footer style="background:#0A0908;padding:3rem 2rem;text-align:center;border-top:1px solid rgba(201,168,76,0.08);">
+    <p style="font-family:'Cormorant Garamond',serif;font-size:1rem;letter-spacing:.3em;color:rgba(247,243,238,0.25);">SHIZEN RESORT — Niseko, Hokkaido</p>
+    <p style="font-size:.65rem;color:rgba(247,243,238,0.15);letter-spacing:.2em;margin-top:.75rem;">© 2025 SHIZEN Resort. All rights reserved.</p>
+  </footer>
+</div>
+
+<!-- ══════════════════════════════
+     JAVASCRIPT
+══════════════════════════════ -->
+<script>
+/* ── Custom cursor ── */
+const cur = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function animRing(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing);})();
+document.querySelectorAll('a,button,[onclick],input,select,textarea').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.width='20px';cur.style.height='20px';ring.style.width='56px';ring.style.height='56px';});
+  el.addEventListener('mouseleave',()=>{cur.style.width='12px';cur.style.height='12px';ring.style.width='36px';ring.style.height='36px';});
+});
+
+/* ── Page switching ── */
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-links button').forEach(b=>b.classList.remove('active-nav'));
+  document.getElementById('page-'+id).classList.add('active');
+  document.getElementById('nav-'+id).classList.add('active-nav');
+  window.scrollTo({top:0,behavior:'smooth'});
+  // Re-trigger reveals for new page
+  setTimeout(()=>{
+    document.querySelectorAll('#page-'+id+' .reveal').forEach(el=>{
+      el.classList.remove('visible');
+      revealObserver.observe(el);
+    });
+    if(id==='about') animateBars();
+  },100);
+  // Café sub-nav color
+  if(id==='cafe'){
+    const sn=document.getElementById('cafe-subnav');
+    sn.style.background='transparent';
+    window.addEventListener('scroll',cafeNavScroll);
+  } else {
+    window.removeEventListener('scroll',cafeNavScroll);
+  }
+}
+
+function cafeNavScroll(){
+  const sn=document.getElementById('cafe-subnav');
+  if(window.scrollY>80) sn.style.background='rgba(44,26,14,0.95)';
+  else sn.style.background='transparent';
+}
+
+/* ── Scroll reveal ── */
+const revealObserver=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');revealObserver.unobserve(e.target);}});
+},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
+
+/* ── Skill bars ── */
+let barsAnimated=false;
+function animateBars(){
+  if(barsAnimated) return;
+  barsAnimated=true;
+  const labels=['pct-html','pct-js','pct-tw','pct-wp','pct-fg'];
+  document.querySelectorAll('.skill-bar-fill').forEach((bar,i)=>{
+    const pct=bar.dataset.pct;
+    setTimeout(()=>{
+      bar.style.width=pct+'%';
+      let start=0,end=parseInt(pct),dur=1200,startT=null;
+      (function step(ts){
+        if(!startT)startT=ts;
+        const p=Math.min((ts-startT)/dur,1);
+        const v=Math.round(p*end);
+        if(labels[i])document.getElementById(labels[i]).textContent=v+'%';
+        if(p<1)requestAnimationFrame(step);
+      })(performance.now());
+    },i*120);
+  });
+}
+
+/* ── Typing effect on About hero ── */
+const typed=document.querySelector('.about-hero .text-white\\/55');
+if(typed){
+  const originalHTML=typed.innerHTML;
+}
+
+/* ── EC filter ── */
+function filterEC(btn,cat){
+  document.querySelectorAll('.category-pill').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.product-card').forEach(card=>{
+    if(cat==='all'||card.dataset.cat===cat){
+      card.style.display='block';
+    } else {
+      card.style.display='none';
+    }
+  });
+}
+
+/* ── Initial: run about page bars after small delay ── */
+setTimeout(animateBars,600);
+</script>
+</body>
+</html>
